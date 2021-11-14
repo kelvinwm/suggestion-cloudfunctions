@@ -119,7 +119,7 @@ exports.createAccountNumber = functions.firestore.document('/complains/{document
         try {
             votesRef.update({
                 "accountNumber": accountNumber,
-                "amount": 30
+                "amount": 1
             })
             console.log('Transaction success!');
         } catch (e) {
@@ -131,6 +131,7 @@ exports.createAccountNumber = functions.firestore.document('/complains/{document
 exports.makePayment = functions.https.onRequest(async (req, res) => {
     // Grab the text parameter.
     const accountNumber = req.body['accountNumber'];
+    console.log('Transaction accountNumber:', accountNumber);
     const votesRef = db.collection('complains').where('accountNumber', '==', accountNumber).get();
     try {
         votesRef.then(response => {
@@ -139,6 +140,7 @@ exports.makePayment = functions.https.onRequest(async (req, res) => {
                 docRef.update({
                     "comment_status": 1
                 })
+                console.log('Transaction updated:', accountNumber);
             })
         })
         res.json({ result: true });
