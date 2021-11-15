@@ -119,7 +119,7 @@ exports.createAccountNumber = functions.firestore.document('/complains/{document
         try {
             votesRef.update({
                 "accountNumber": accountNumber,
-                "amount": 1
+                "amount": 0
             })
             console.log('Transaction success!');
         } catch (e) {
@@ -135,15 +135,18 @@ exports.makePayment = functions.https.onRequest(async (req, res) => {
     const votesRef = db.collection('complains').where('accountNumber', '==', accountNumber).get();
     try {
         votesRef.then(response => {
-            response.docs.forEach((doc) => {
-                const docRef = db.collection('complains').doc(doc.id)
-                docRef.update({
-                    "comment_status": 1
-                })
-                console.log('Transaction updated:', accountNumber);
+            response.docs.forEach(async (doc) => {
+                // const docRef = db.collection('complains').doc(doc.id)
+                // docRef.update({
+                //     "comment_status": 1
+                // })
+                // console.log('Transaction updated:', accountNumber);
+                await db.collection('complains').doc(doc.id).update({ "comment_status": 1 })
+                // Send back a message that we've successfully written the message
+                console.log(`Doc with ID: ${doc.id} added.`);
+                res.json({ result: true });
             })
         })
-        res.json({ result: true });
     } catch (e) {
         console.log('Transaction failure:', e);
         res.json({ result: false });
