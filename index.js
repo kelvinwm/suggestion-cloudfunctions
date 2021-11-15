@@ -119,7 +119,8 @@ exports.createAccountNumber = functions.firestore.document('/complains/{document
         try {
             votesRef.update({
                 "accountNumber": accountNumber,
-                "amount": 0
+                "amount": 0,
+                "comment_status": 1
             })
             console.log('Transaction success!');
         } catch (e) {
