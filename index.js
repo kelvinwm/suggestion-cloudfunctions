@@ -136,11 +136,6 @@ exports.makePayment = functions.https.onRequest(async (req, res) => {
     try {
         votesRef.then(response => {
             response.docs.forEach(async (doc) => {
-                // const docRef = db.collection('complains').doc(doc.id)
-                // docRef.update({
-                //     "comment_status": 1
-                // })
-                // console.log('Transaction updated:', accountNumber);
                 await db.collection('complains').doc(doc.id).update({ "comment_status": 1 })
                 // Send back a message that we've successfully written the message
                 console.log(`Doc with ID: ${doc.id} added.`);
