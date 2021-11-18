@@ -57,14 +57,30 @@ exports.updateVote = functions.firestore.document('/votes/{documentId}')
                     "vote": FieldValue.increment(1),
                     "dislike": FieldValue.increment(-1)
                 })
+            } else if (BvoteType == 3 && AvoteType == 1) {
+                votesRef.update({
+                    "vote": FieldValue.increment(1),
+                    "report": FieldValue.increment(-1)
+                })
             } else if (BvoteType == 1 && AvoteType == -1) {
                 votesRef.update({
                     "dislike": FieldValue.increment(1),
                     "vote": FieldValue.increment(-1)
                 })
-            } else if (AvoteType == 3) {
+            } else if (BvoteType == 3 && AvoteType == -1) {
                 votesRef.update({
-                    "report": FieldValue.increment(1)
+                    "dislike": FieldValue.increment(1),
+                    "report": FieldValue.increment(-1)
+                })
+            } else if (BvoteType == 1 && AvoteType == 3) {
+                votesRef.update({
+                    "report": FieldValue.increment(1),
+                    "vote": FieldValue.increment(-1)
+                })
+            } else if (BvoteType == -1 && AvoteType == 3) {
+                votesRef.update({
+                    "report": FieldValue.increment(1),
+                    "dislike": FieldValue.increment(-1)
                 })
             }
 
